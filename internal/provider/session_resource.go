@@ -86,7 +86,6 @@ func (r *SessionResource) Configure(_ context.Context, req resource.ConfigureReq
 func (r *SessionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data SessionResourceModel
 
-	// Read Terraform plan data into the model
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
 	if resp.Diagnostics.HasError() {
@@ -106,22 +105,16 @@ func (r *SessionResource) Create(ctx context.Context, req resource.CreateRequest
 		return
 	}
 
-	// For the purposes of this example code, hardcoding a response value to
-	// save into the Terraform state.
 	data.Pid = types.Int32Value(int32(pid)) // #nosec G115
 
-	// Write logs using the tflog package
-	// Documentation: https://terraform.io/plugin/log
 	tflog.Trace(ctx, fmt.Sprintf("started %s with pid %d", r.path, pid))
 
-	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *SessionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data SessionResourceModel
 
-	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	if resp.Diagnostics.HasError() {
@@ -133,7 +126,6 @@ func (r *SessionResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -144,7 +136,6 @@ func (r *SessionResource) Update(ctx context.Context, req resource.UpdateRequest
 func (r *SessionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data SessionResourceModel
 
-	// Read Terraform prior state data into the model
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	if resp.Diagnostics.HasError() {
